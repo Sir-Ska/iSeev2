@@ -52,18 +52,16 @@ public class TimerService extends Service {
         // Get the HandlerThread's Looper and use it for our Handler
         serviceLooper = thread.getLooper();
         serviceHandler = new ServiceHandler(serviceLooper);
-
-        long[] pattern = {0, 500, 1000, 500, 1000};
-        Vibrator v = (Vibrator)getApplicationContext()
-                .getSystemService(Context.VIBRATOR_SERVICE);
-        // Vibrate for 300 milliseconds
-        v.vibrate(pattern,-1);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Toast.makeText(this, "service starting", Toast.LENGTH_SHORT).show();
-
+        long[] pattern = {0, 500, 1000, 500, 1000};
+        Vibrator v = (Vibrator)getApplicationContext()
+                .getSystemService(Context.VIBRATOR_SERVICE);
+        // Vibrate for 300 milliseconds
+        v.vibrate(pattern,-1);
         // For each start request, send a message to start a job and deliver the
         // start ID so we know which request we're stopping when we finish the job
         Message msg = serviceHandler.obtainMessage();
