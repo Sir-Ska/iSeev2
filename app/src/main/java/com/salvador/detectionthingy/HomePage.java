@@ -229,9 +229,10 @@ public class HomePage extends AppCompatActivity {
                         indicator.setText("MINUTE");
                     }
                     else if(currMin % 20 == 0){
+                        long[] pattern = {0, 500, 1000, 500, 1000};
                         Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                         // Vibrate for 300 milliseconds
-                        v.vibrate(300);
+                        v.vibrate(pattern,-1);
                     }
                     else{
                         indicator.setText("MINUTES");
