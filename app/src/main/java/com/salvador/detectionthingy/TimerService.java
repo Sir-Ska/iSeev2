@@ -1,6 +1,7 @@
 package com.salvador.detectionthingy;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -8,6 +9,7 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
 import android.os.Process;
+import android.os.Vibrator;
 import android.widget.Toast;
 
 public class TimerService extends Service {
@@ -47,10 +49,14 @@ public class TimerService extends Service {
                 Process.THREAD_PRIORITY_BACKGROUND);
         thread.start();
 
-
         // Get the HandlerThread's Looper and use it for our Handler
         serviceLooper = thread.getLooper();
         serviceHandler = new ServiceHandler(serviceLooper);
+
+        long[] pattern = {0, 500, 1000, 500, 1000};
+        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        // Vibrate for 300 milliseconds
+        v.vibrate(pattern,-1);
     }
 
     @Override
