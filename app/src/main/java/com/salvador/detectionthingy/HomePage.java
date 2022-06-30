@@ -3,9 +3,11 @@ package com.salvador.detectionthingy;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Vibrator;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
 import android.util.Log;
@@ -225,6 +227,11 @@ public class HomePage extends AppCompatActivity {
                     Long currMin = Long.valueOf(secCounter / 60);
                     if(currMin < 2){
                         indicator.setText("MINUTE");
+                    }
+                    else if(currMin % 20 == 0){
+                        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                        // Vibrate for 300 milliseconds
+                        v.vibrate(300);
                     }
                     else{
                         indicator.setText("MINUTES");
