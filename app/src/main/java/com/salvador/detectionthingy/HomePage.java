@@ -218,34 +218,36 @@ public class HomePage extends AppCompatActivity {
 
     private void startTimer(){
 
-        h.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Log.d("DATA",secCounter.toString());
-                secCounter++;
-                if(secCounter % 60 == 0){
-                    Long currMin = Long.valueOf(secCounter / 60);
-                    if(currMin < 2){
-                        indicator.setText("MINUTE");
-                    }
-                    else if(currMin % 20 == 0){
-                        long[] pattern = {0, 500, 1000, 500, 1000};
-                        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                        // Vibrate for 300 milliseconds
-                        v.vibrate(pattern,-1);
-                    }
-                    else{
-                        indicator.setText("MINUTES");
-                    }
-
-                    big_number.setText(currMin.toString());
-
-                    Snackbar.make(tvStat,"60 seconds has passed",Snackbar.LENGTH_LONG).show();
-                }
-
-                h.postDelayed(this,1000);
-            }
-        },1000);
+        Intent timerServe = new Intent(this,TimerService.class);
+        startService(timerServe);
+//        h.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                Log.d("DATA",secCounter.toString());
+//                secCounter++;
+//                if(secCounter % 60 == 0){
+//                    Long currMin = Long.valueOf(secCounter / 60);
+//                    if(currMin < 2){
+//                        indicator.setText("MINUTE");
+//                    }
+//                    else if(currMin % 20 == 0){
+//                        long[] pattern = {0, 500, 1000, 500, 1000};
+//                        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+//                        // Vibrate for 300 milliseconds
+//                        v.vibrate(pattern,-1);
+//                    }
+//                    else{
+//                        indicator.setText("MINUTES");
+//                    }
+//
+//                    big_number.setText(currMin.toString());
+//
+//                    Snackbar.make(tvStat,"60 seconds has passed",Snackbar.LENGTH_LONG).show();
+//                }
+//
+//                h.postDelayed(this,1000);
+//            }
+//        },1000);
     }
 
 

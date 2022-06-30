@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.salvador.detectionthingy">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
@@ -17,6 +17,11 @@
         android:theme="@style/Theme.DetectionThingy"
         android:usesCleartextTraffic="true"
         tools:targetApi="29">
+        <service
+            android:name=".TimerService"
+            android:enabled="true"
+            android:exported="true"></service>
+
         <activity
             android:name=".MonitoringData"
             android:exported="false" />
