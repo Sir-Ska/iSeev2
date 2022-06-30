@@ -56,7 +56,7 @@ public class TimerService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Toast.makeText(this, "service starting", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "service starting", Toast.LENGTH_SHORT).show();
         long[] pattern = {0, 500, 1000, 500, 1000};
         Vibrator v = (Vibrator)getApplicationContext()
                 .getSystemService(Context.VIBRATOR_SERVICE);
@@ -80,6 +80,6 @@ public class TimerService extends Service {
 
     @Override
     public void onDestroy() {
-        Toast.makeText(this, "service done", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "service done", Toast.LENGTH_SHORT).show();
     }
 }
