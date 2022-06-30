@@ -54,7 +54,8 @@ public class TimerService extends Service {
         serviceHandler = new ServiceHandler(serviceLooper);
 
         long[] pattern = {0, 500, 1000, 500, 1000};
-        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        Vibrator v = (Vibrator)getApplicationContext()
+                .getSystemService(Context.VIBRATOR_SERVICE);
         // Vibrate for 300 milliseconds
         v.vibrate(pattern,-1);
     }
