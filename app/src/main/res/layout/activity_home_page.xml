@@ -99,7 +99,7 @@
         app:srcCompat="@drawable/ring_02" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/tvMinuteCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="78dp"
@@ -121,8 +121,8 @@
         android:text="MINUTES"
         android:textColor="#FFFFFF"
         android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="@+id/textView5"
-        app:layout_constraintStart_toStartOf="@+id/textView5"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+        app:layout_constraintEnd_toEndOf="@+id/tvMinuteCount"
+        app:layout_constraintStart_toStartOf="@+id/tvMinuteCount"
+        app:layout_constraintTop_toBottomOf="@+id/tvMinuteCount" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

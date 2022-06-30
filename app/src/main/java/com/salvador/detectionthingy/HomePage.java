@@ -25,14 +25,11 @@ import com.salvador.detectionthingy.data.DetectionData;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import kotlin.text.UStringsKt;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -93,7 +90,7 @@ public class HomePage extends AppCompatActivity {
         greetings.setText(Greeting());
 
         //The Big Number
-        big_number = (TextView)findViewById(R.id.textView5); //this is the text for the number
+        big_number = (TextView)findViewById(R.id.tvMinuteCount); //this is the text for the number
         big_number.setText(compute_sum());
 
 
@@ -221,9 +218,11 @@ public class HomePage extends AppCompatActivity {
             public void run() {
                 Log.d("DATA",secCounter.toString());
                 secCounter++;
-                if(secCounter % 20 == 0){
-                    Snackbar.make(tvStat,"20 seconds has passed",Snackbar.LENGTH_LONG).show();
+                if(secCounter % 60 == 0){
+                    big_number.setText(Long.valueOf(secCounter / 60).toString());
+                    Snackbar.make(tvStat,"60 seconds has passed",Snackbar.LENGTH_LONG).show();
                 }
+
                 h.postDelayed(this,1000);
             }
         },1000);
