@@ -64,6 +64,7 @@ public class HomePage extends AppCompatActivity {
 
     private double sideload_out;
 
+    Long secCounter = 0l;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +108,8 @@ public class HomePage extends AppCompatActivity {
         fetchData(SERVER_URL_TV,"TV");
         fetchData(SERVER_URL_LAPTOP,"Laptop");
         fetchData(SERVER_URL_CELLPHONE,"Cellphone");
+
+        startTimer();
 
     }
 
@@ -209,6 +212,21 @@ public class HomePage extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void startTimer(){
+
+        h.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Log.d("DATA",secCounter.toString());
+                secCounter++;
+                if(secCounter % 20 == 0){
+                    Snackbar.make(tvStat,"20 seconds has passed",Snackbar.LENGTH_LONG).show();
+                }
+                h.postDelayed(this,1000);
+            }
+        },1000);
     }
 
 
