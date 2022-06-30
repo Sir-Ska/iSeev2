@@ -64,6 +64,8 @@ public class HomePage extends AppCompatActivity {
 
     private double sideload_out;
 
+    PrefHelper ph;
+
     Long secCounter = 0l;
 
     @Override
@@ -76,7 +78,9 @@ public class HomePage extends AppCompatActivity {
 
         setContentView(R.layout.activity_home_page);
 
+        ph = new PrefHelper(HomePage.this);
 
+        secCounter = ph.getLastQuery();
         //Button to Graph
         ImageButton btn = (ImageButton) findViewById(R.id.home_button);
 
@@ -291,5 +295,9 @@ public class HomePage extends AppCompatActivity {
         return greeting;
     }
 
-
+    @Override
+    protected void onDestroy() {
+        ph.saveQuery(secCounter);
+        super.onDestroy();
+    }
 }
