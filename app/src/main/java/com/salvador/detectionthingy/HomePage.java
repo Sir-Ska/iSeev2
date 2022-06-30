@@ -58,6 +58,7 @@ public class HomePage extends AppCompatActivity {
 
     public TextView greetings;
     private TextView big_number;
+    private TextView indicator;
 
     private double sideload_out;
 
@@ -92,6 +93,8 @@ public class HomePage extends AppCompatActivity {
         //The Big Number
         big_number = (TextView)findViewById(R.id.tvMinuteCount); //this is the text for the number
         big_number.setText(compute_sum());
+
+        indicator = (TextView)findViewById(R.id.tvIndicatorMinutes);
 
 
         h = new Handler(this.getMainLooper());
@@ -219,7 +222,16 @@ public class HomePage extends AppCompatActivity {
                 Log.d("DATA",secCounter.toString());
                 secCounter++;
                 if(secCounter % 60 == 0){
-                    big_number.setText(Long.valueOf(secCounter / 60).toString());
+                    Long currMin = Long.valueOf(secCounter / 60);
+                    if(currMin < 2){
+                        indicator.setText("MINUTE");
+                    }
+                    else{
+                        indicator.setText("MINUTES");
+                    }
+
+                    big_number.setText(currMin.toString());
+
                     Snackbar.make(tvStat,"60 seconds has passed",Snackbar.LENGTH_LONG).show();
                 }
 
