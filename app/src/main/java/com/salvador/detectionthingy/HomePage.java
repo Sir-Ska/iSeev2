@@ -273,7 +273,15 @@ public class HomePage extends AppCompatActivity {
                 h.post(new Runnable() {
                     @Override
                     public void run() {
-                        big_number.setText(String.format("%.2f",getTotalDifference(listDiff)));
+
+                        Double timeConsumed = getTotalDifference(listDiff);
+
+                        if (timeConsumed % 20 == 0){
+                            Snackbar.make(tvStat,"20 minutes has passed",Snackbar.LENGTH_LONG).show();
+                            Intent vibrator = new Intent(HomePage.this,TimerService.class);
+                            startService(vibrator);
+                        }
+                        big_number.setText(String.format("%.2f",timeConsumed));
                     }
                 });
                 Log.d("Total difference " + searchKey,"DIFF:"+getTotalDifference(listDiff).toString());
