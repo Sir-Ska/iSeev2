@@ -48,7 +48,7 @@ public class HomePage extends AppCompatActivity {
     private String SERVER_URL_TV = "http://192.168.1.3/ska/data_fetch.php?itemkey=tv";
     private String SERVER_URL_LAPTOP = "http://192.168.1.3/ska/data_fetch.php?itemkey=laptop";
     private String SERVER_URL_CELLPHONE = "http://192.168.1.3/ska/data_fetch.php?itemkey=cell";
-    private String SERVER_URL_NOW = "http://192.168.1.3/ska/data_fetch_now.php?itemkey=cell";
+    private String SERVER_URL_NOW = "http://192.168.1.3/ska/data_fetch_today.php?itemkey=cell";
 
     private final OkHttpClient htc = new OkHttpClient();
 
@@ -273,7 +273,7 @@ public class HomePage extends AppCompatActivity {
                 h.post(new Runnable() {
                     @Override
                     public void run() {
-                        big_number.setText(getTotalDifference(listDiff).toString());
+                        big_number.setText(String.format("%.2f",getTotalDifference(listDiff)));
                     }
                 });
                 Log.d("Total difference " + searchKey,"DIFF:"+getTotalDifference(listDiff).toString());
