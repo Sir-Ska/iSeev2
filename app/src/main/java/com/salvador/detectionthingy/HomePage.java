@@ -48,6 +48,7 @@ public class HomePage extends AppCompatActivity {
     private String SERVER_URL_TV = "http://192.168.1.3/ska/data_fetch.php?itemkey=tv";
     private String SERVER_URL_LAPTOP = "http://192.168.1.3/ska/data_fetch.php?itemkey=laptop";
     private String SERVER_URL_CELLPHONE = "http://192.168.1.3/ska/data_fetch.php?itemkey=cell";
+    private String SERVER_URL_NOW = "http://192.168.1.3/ska/data_fetch_now.php?itemkey=cell";
 
     private final OkHttpClient htc = new OkHttpClient();
 
@@ -183,6 +184,7 @@ public class HomePage extends AppCompatActivity {
 //                                Log.d("DIFF " + searchKey,"Difference: " + cDiff.toString());
                             }
                             else{
+
                                 Log.d("THRES_LIMIT " + searchKey,"Disregarded due to long time gap:" + cDiff.toString());
                             }
                         }
@@ -204,9 +206,7 @@ public class HomePage extends AppCompatActivity {
 //                data.setValueFormatter(new PercentFormatter());
 
 
-
                 Log.d("Total difference " + searchKey,"DIFF:"+getTotalDifference(listDiff).toString());
-
 
                 h.post(new Runnable() {
                     @Override
@@ -220,30 +220,96 @@ public class HomePage extends AppCompatActivity {
 
     }
 
+    private void fetchDataToday(String url,String searchKey){
+
+        Request rq = new Request.Builder()
+                .url(url)
+                .build();
+
+        htc.newCall(rq).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                Log.e("FAIL","Data fetch fail: " + e.getMessage());
+
+                Snackbar.make(chart,"Fetch from server failed.",Snackbar.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                Gson gg = new Gson();
+                String respData = response.body().string();
+
+                Log.d("RAWDATA" + searchKey,respData);
+                DetectionData[] ddata = gg.fromJson(respData, DetectionData[].class);
+
+                List<Long> listDiff = new ArrayList<>();
+
+                for(int i=0;i<ddata.length;i++){
+//                    Log.d("DATA" +searchKey,ddata[i].object_enum + "|" + ddata[i].confidence + "|" + ddata[i].img_timestamp);
+
+                    try {
+                        if (i+1 < ddata.length){
+
+                            Date d1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(ddata[i].img_timestamp);
+                            Date d2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(ddata[i+1].img_timestamp);
+
+                            Long cDiff = Long.valueOf(d2.getTime()-d1.getTime()) / 1000;
+
+                            if (cDiff <= 600){
+                                listDiff.add(cDiff);
+//                                Log.d("DIFF " + searchKey,"Difference: " + cDiff.toString());
+                            }
+                            else{
+                                Log.d("THRES_LIMIT " + searchKey,"Disregarded due to long time gap:" + cDiff.toString());
+                            }
+                        }
+                        else{
+                            break;
+                        }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
+                h.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        big_number.setText(getTotalDifference(listDiff).toString());
+                    }
+                });
+                Log.d("Total difference " + searchKey,"DIFF:"+getTotalDifference(listDiff).toString());
+
+            }
+        });
+
+    }
+
     private void startTimer(){
 
         h.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Log.d("DATA",secCounter.toString());
-                secCounter++;
-                if(secCounter % 60 == 0){
-                    Long currMin = Long.valueOf(secCounter / 60);
-                    if(currMin < 2){
-                        indicator.setText("MINUTE");
-                    }
-                    else if(currMin % 20 == 0){
-                        Intent vibrator = new Intent(HomePage.this,TimerService.class);
-                        startService(vibrator);
-                    }
-                    else{
-                        indicator.setText("MINUTES");
-                    }
+//                Log.d("DATA",secCounter.toString());
+//                secCounter++;
+//                if(secCounter % 60 == 0){
+//                    Long currMin = Long.valueOf(secCounter / 60);
+//                    if(currMin < 2){
+//                        indicator.setText("MINUTE");
+//                    }
+//                    else if(currMin % 20 == 0){
+//                        Intent vibrator = new Intent(HomePage.this,TimerService.class);
+//                        startService(vibrator);
+//                    }
+//                    else{
+//                        indicator.setText("MINUTES");
+//                    }
+//
+//                    big_number.setText(currMin.toString());
+//
+//                    Snackbar.make(tvStat,"60 seconds has passed",Snackbar.LENGTH_LONG).show();
+//                }
 
-                    big_number.setText(currMin.toString());
+                fetchDataToday(SERVER_URL_NOW,"none");
 
-                    Snackbar.make(tvStat,"60 seconds has passed",Snackbar.LENGTH_LONG).show();
-                }
 
                 h.postDelayed(this,1000);
             }
@@ -251,7 +317,11 @@ public class HomePage extends AppCompatActivity {
     }
 
 
-
+    /**
+     * Returns in minutes
+     * @param diffs
+     * @return
+     */
     private Double getTotalDifference(List<Long> diffs){
 
         Long totDiff = 0l;
