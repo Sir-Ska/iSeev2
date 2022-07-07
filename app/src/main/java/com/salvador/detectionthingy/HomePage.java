@@ -49,7 +49,7 @@ public class HomePage extends AppCompatActivity {
     private String SERVER_URL_LAPTOP = "http://192.168.1.3/ska/data_fetch.php?itemkey=laptop";
     private String SERVER_URL_CELLPHONE = "http://192.168.1.3/ska/data_fetch.php?itemkey=cell";
     private String SERVER_URL_NOW = "http://192.168.1.3/ska/data_fetch_today.php?itemkey=cell";
-
+    private String SERVER_URL_SPEAKER = "http://192.168.1.17/heap";
     private final OkHttpClient htc = new OkHttpClient();
 
     ArrayList<PieEntry> entries = new ArrayList<>();
@@ -280,6 +280,7 @@ public class HomePage extends AppCompatActivity {
                             Snackbar.make(tvStat,"20 minutes has passed",Snackbar.LENGTH_LONG).show();
                             Intent vibrator = new Intent(HomePage.this,TimerService.class);
                             startService(vibrator);
+                            initSound();
                         }
                         big_number.setText(String.format("%.2f",timeConsumed));
                     }
@@ -290,7 +291,23 @@ public class HomePage extends AppCompatActivity {
         });
 
     }
+    private void initSound(){
+        Request rq = new Request.Builder()
+                .url(SERVER_URL_SPEAKER)
+                .build();
 
+        htc.newCall(rq).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+
+            }
+        });
+    }
     private void startTimer(){
 
         h.postDelayed(new Runnable() {
